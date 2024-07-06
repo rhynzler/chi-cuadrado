@@ -1,0 +1,61 @@
+---
+title: "Chi-Cuadrado"
+author: "Paúl Arévalo"
+date: "2024-07-04"
+output: 
+  pdf_document:
+    extra_dependencies: ["fvextra"]
+    includes:
+      in_header: header.tex
+---
+
+
+Vamos a crear una tabla de contingencias, la cual es una tabla bidimensional que muestra las frecuencias
+observadas y esperadas para cada categoría. En este caso, la tabla tendrá dos filas (para las categorías A, B
+y C) y dos columnas (para las frecuencias observadas y esperadas).
+
+```{r}
+Deficiente <- c(5, 20)
+Regular <- c(11, 32)
+Bueno <- c(7, 3)
+cuadro3 <- data.frame(Deficiente, Regular, Bueno)
+rownames(cuadro3) <- c("UCuenca", "UDA")
+cuadro3
+```
+
+```{r}
+library("gplots")
+```
+
+```{r}
+comotabla <- as.table(as.matrix(cuadro3))
+comotabla
+```
+
+```{r}
+balloonplot(t(comotabla),
+  main = "Nuestros resultados", xlab = "", ylab = "",
+  label = TRUE, show.margins = FALSE, dotsize = 15
+)
+```
+
+```{r}
+# Prueba Chi-Cuadrado
+prueba_chi_cuadrado <- chisq.test(cuadro3)
+```
+
+```{r}
+# Imprimir resultados
+print(prueba_chi_cuadrado)
+```
+
+En este ejemplo, el valor p (0.009603) es menor que el nivel de significancia (0.05). Esto significa que se
+rechaza la hipótesis nula y se acepta la hipótesis alternativa.
+
+```{r}
+prueba_chi_cuadrado$observed
+```
+
+```{r}
+prueba_chi_cuadrado$expected
+```
